@@ -1,101 +1,76 @@
 class Tree {
     static class TreeNode {
         String kategori;
-        TreeNode left, right; 
-        TreeNode child; 
+        TreeNode next; 
+        TreeNode foodList; 
 
         TreeNode(String kategori) {
             this.kategori = kategori;
-            this.left = null;
-            this.right = null;
-            this.child = null;
+            this.next = null;
+            this.foodList = null;
         }
     }
 
     private TreeNode root;
 
     void tambahKategori(String kategori) {
+        TreeNode newKategori = new TreeNode(kategori);
         if (root == null) {
-            root = new TreeNode(kategori);
+            root = newKategori;
         } else {
-            tambahRekursif(root, kategori);
+            TreeNode temp = root;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newKategori;
         }
     }
 
-    private void tambahRekursif(TreeNode node, String kategori) {
-        if (node == null) {
-            return;
-        }
-
-        if (kategori.compareTo(node.kategori) < 0) {
-            if (node.left == null) {
-                node.left = new TreeNode(kategori);
+    void tambahMakananKeKategori(String kategori, String makanan) {
+        TreeNode kategoriNode = cariKategori(root, kategori);
+        if (kategoriNode != null) {
+            TreeNode newMakanan = new TreeNode(makanan);
+            if (kategoriNode.foodList == null) {
+                kategoriNode.foodList = newMakanan;
             } else {
-                tambahRekursif(node.left, kategori); 
-            }
-        } else if (kategori.compareTo(node.kategori) > 0) {
-            if (node.right == null) {
-                node.right = new TreeNode(kategori);
-            } else {
-                tambahRekursif(node.right, kategori); 
-            }
-        }
-    }
-    void tambahSubKategori(String kategoriInduk, String subKategori) {
-        TreeNode nodeInduk = cariKategori(root, kategoriInduk);
-        if (nodeInduk != null) {
-            TreeNode subKategoriNode = new TreeNode(subKategori);
-            if (nodeInduk.child == null) {
-                nodeInduk.child = subKategoriNode;
-            } else {
-                TreeNode temp = nodeInduk.child;
-                while (temp.right != null) {
-                    temp = temp.right; 
+                TreeNode temp = kategoriNode.foodList;
+                while (temp.next != null) {
+                    temp = temp.next;
                 }
-                temp.right = subKategoriNode; 
+                temp.next = newMakanan;
             }
-            System.out.println("Subkategori " + subKategori + " berhasil ditambahkan ke kategori " + kategoriInduk);
         } else {
-            System.out.println("Kategori induk " + kategoriInduk + " tidak ditemukan.");
+            System.out.println("Kategori " + kategori + " tidak ditemukan.");
         }
     }
     private TreeNode cariKategori(TreeNode node, String kategori) {
-        if (node == null) {
-            return null;
+        while (node != null) {
+            if (node.kategori.equals(kategori)) {
+                return node;
+            }
+            node = node.next;
         }
-
-        if (node.kategori.equals(kategori)) {
-            return node;
-        }
-
-        if (kategori.compareTo(node.kategori) < 0) {
-            return cariKategori(node.left, kategori); 
-        } else {
-            return cariKategori(node.right, kategori); 
-        }
+        return null;
     }
     void tampilkanKategori() {
         if (root == null) {
             System.out.println("Belum ada kategori.");
         } else {
+            System.out.println("\n+==============================+");
+            System.out.println("|        SARAN NUTRISI         |");
+            System.out.println("+==============================+");
             tampilkanKategoriRekursif(root);
         }
     }
-
     private void tampilkanKategoriRekursif(TreeNode node) {
         if (node != null) {
-            tampilkanKategoriRekursif(node.left);
-            System.out.println("Kategori " + node.kategori);
-            if (node.child != null) {
-                tampilkanSubKategori(node.child);
+            System.out.println("Kategori: " + node.kategori);
+            TreeNode makananNode = node.foodList;
+            while (makananNode != null) {
+                System.out.println("   - " + makananNode.kategori);
+                makananNode = makananNode.next;
             }
-            tampilkanKategoriRekursif(node.right);
+            tampilkanKategoriRekursif(node.next);
         }
     }
-    private void tampilkanSubKategori(TreeNode node) {
-        while (node != null) {
-            System.out.println("   - " + node.kategori);
-            node = node.right; 
-        }
-    }  
 }

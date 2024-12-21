@@ -1,0 +1,60 @@
+class SortingDanSearch {
+
+    static void bubbleSort(LinkedListDokter daftarDokter) {
+        if (daftarDokter.head == null || daftarDokter.head.next == null) {
+            return;
+        }
+
+        boolean swapped;
+        do {
+            swapped = false;
+            Node current = daftarDokter.head;
+
+            while (current.next != null) {
+                if (current.username.compareTo(current.next.username) > 0) {
+
+                    String tempUsername = current.username;
+                    String tempPassword = current.password;
+
+                    current.username = current.next.username;
+                    current.password = current.next.password;
+
+                    current.next.username = tempUsername;
+                    current.next.password = tempPassword;
+
+                    swapped = true;
+                }
+                current = current.next;
+            }
+        } while (swapped);
+    }
+
+    static void printDokter(LinkedListDokter daftarDokter) {
+        Node current = daftarDokter.head;
+        System.out.println("+=================================+");
+        System.out.println("|       DOKTER  TERDAFTAR         |");
+        System.out.println("+=================================+");
+        while (current != null) {
+            System.out.println("- Dr. " + current.username );
+            current = current.next;
+        }
+    }
+
+    static void dfsSearch(LinkedListDokter daftarDokter, String targetUsername) {
+        Node current = daftarDokter.head;
+        int posisi = 0; 
+    
+        while (current != null) {
+            posisi++;
+            if (current.username.equals(targetUsername)) {
+                System.out.println("Dokter " + current.username + " ditemukan");
+                System.out.println("Posisi dalam daftar: " + posisi);
+                return;
+            }
+            current = current.next;
+        }
+    
+        System.out.println("Dokter dengan username \"" + targetUsername + "\" tidak ditemukan dalam daftar.");
+    }
+    
+}

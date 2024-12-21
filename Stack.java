@@ -35,7 +35,10 @@ class Stack {
             System.out.println("Tidak ada riwayat rekomendasi.");
             return;
         }
-        System.out.println("Riwayat Rekomendasi Makanan:");
+        
+        System.out.println("+==================================================================+");
+        System.out.println("|                     RIWAYAT REKOMENDASI MAKANAN                  |");
+        System.out.println("+==================================================================+");
         NodeStack temp = top;
         while (temp != null) {
             System.out.println("- " + temp.rekomendasi);
